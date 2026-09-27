@@ -10,18 +10,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
 public class CharacterService {
 
-    private CharacterClient characterClient;
+    private final CharacterClient characterClient;
 
-    public List<CharacterRM> getFilteredCharacters() {
+    public CharacterService(CharacterClient characterClient) {
+        this.characterClient = characterClient;
+    }
 
-        CharacterResponseRM response = characterClient.getCharacters();
+    public List<CharacterRM> getAliveHumans() {
 
-        return response.getResults().stream()
-                .filter(c -> "Alive".equalsIgnoreCase(c.getStatus()))
-                .filter(c -> "Human".equalsIgnoreCase(c.getSpecies()))
-                .collect(Collectors.toList());
+        return characterClient
+                .getCharacters(1, "Alive", "Human")
+                .getResults();
     }
 }
+
