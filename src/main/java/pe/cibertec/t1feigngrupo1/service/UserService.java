@@ -19,7 +19,7 @@ public class UserService {
         List<UserPlaceHolder> users = userClient.getUsers();
 
         return users.stream()
-                .filter(user -> user.getUserId() != null && user.getUserId() % 2 == 0)
+                .filter(user -> user.getUserId() == null || user.getUserId() % 2 == 0)
                 .filter(user -> user.getId() % 2 != 0)
                 .collect(Collectors.toList());
     }
